@@ -47,7 +47,9 @@
                         @else
                             <li><a class="nav-link" href="{{ route('mesarticles') }}">Mes articles</a></li>
                             <li><a class="nav-link" href="{{ route('articles.create') }}">Ajouter un article</a></li>
-
+                            @can('isAdmin')
+                             <li><a class="nav-link" href="{{ route('gestionUtilisateur.index') }}">Gestion utilisateurs</span></li>
+                            @endcan
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

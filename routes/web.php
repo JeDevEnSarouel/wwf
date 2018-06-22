@@ -18,4 +18,8 @@ Route::middleware('auth')->group(function () {
         //'except' => ['index', 'show']
     ]);
     Route::get('/mes-articles', 'ArticleController@mesArticles')->name('mesarticles');
+    // Route::get('/gestion/{id}/edit', 'GestionUtilisateurController@edit')->name('gestionutilisateuredit');
+    // Route::put('/gestion/{id}/update', 'GestionUtilisateurController@update')->name('gestionutilisateurupdate');
+    // Route::get('/gestion', 'GestionUtilisateurController@index')->name('gestionutilisateurindex');
+    Route::resource('gestionUtilisateur', 'GestionUtilisateurController');
 });
