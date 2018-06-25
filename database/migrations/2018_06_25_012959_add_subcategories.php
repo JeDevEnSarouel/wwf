@@ -21,8 +21,8 @@ class AddSubCategories extends Migration
         $table->timestamps();
       });
 
-      Schema::table('categories', function($table) {
-          $table->foreign('categories_id')->references('id')->on('categories');
+      Schema::table('subcategories', function($table) {
+          $table->foreign('categorie_id')->references('id')->on('categories');
       });
 
     }
