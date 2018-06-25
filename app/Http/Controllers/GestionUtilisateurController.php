@@ -45,6 +45,9 @@ class GestionUtilisateurController extends Controller
      */
     public function edit($id)
     {
+      if(!Gate::allows('isAdmin')){
+          abort(404,"Sorry, You can do this actions");
+      }
       // get the nerd
       $user = User::find($id);
 
@@ -62,6 +65,9 @@ class GestionUtilisateurController extends Controller
      */
     public function update(Request $request, $id)
     {
+      if(!Gate::allows('isAdmin')){
+          abort(404,"Sorry, You can do this actions");
+      }
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;

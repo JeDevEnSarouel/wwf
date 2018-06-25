@@ -41,6 +41,7 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         <li><a class="nav-link" href="{{ route('articles.index') }}">Tous les articles</a></li>
+                        <li><a class="nav-link" href="{{ route('categorie.index') }}">Forum</a></li>
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>

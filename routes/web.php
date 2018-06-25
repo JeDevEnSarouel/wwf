@@ -22,4 +22,5 @@ Route::middleware('auth')->group(function () {
     // Route::put('/gestion/{id}/update', 'GestionUtilisateurController@update')->name('gestionutilisateurupdate');
     // Route::get('/gestion', 'GestionUtilisateurController@index')->name('gestionutilisateurindex');
     Route::resource('gestionUtilisateur', 'GestionUtilisateurController');
+    Route::resource('categorie', 'CategorieController');
 });
