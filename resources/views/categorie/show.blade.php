@@ -7,6 +7,7 @@
             <div class="card">
                 <div class="card-header">Catégorie {{ $categorie->titre }}</div>
                 <a href="{{ route('categorie.index') }}">Retour aux catégories</a>
+                <a href="{{ route('subcategorie.customcreate', $categorie->id) }}">Créer une sous catégorie</a>
                 <table class="table table-responsive">
         					<thead>
         						<tr>
@@ -17,18 +18,19 @@
         					</thead>
 
                   <tbody>
+                    @foreach($categorie->subcategories as $subcategorie)
                       <tr>
-                        <td>futur sous catégorie</td>
-                        <td><a href="#">Accéder</a> | <a href="#">Modifier</a></td>
+
+                        <td>{{ $subcategorie->titre }}</td>
+                        <td><a href="{{route('subcategorie.show', $subcategorie->id)}}" class="btn btn-success">Accéder</a>
+                            <a href="{{route('subcategorie.edit', $subcategorie->id)}}" class="btn btn-warning">Modifier</a>
+                            {{ Form::open(array('url' => 'subcategorie/' . $subcategorie->id, 'class' => 'pull-right')) }}
+                                {{ Form::hidden('_method', 'DELETE') }}
+                                {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}
+                            {{ Form::close() }}
+                        </td>
                       </tr>
-                      <tr>
-                        <td>futur sous catégorie</td>
-                        <td><a href="#">Accéder</a> | <a href="#">Modifier</a></td>
-                      </tr>
-                      <tr>
-                        <td>futur sous catégorie</td>
-                        <td><a href="#">Accéder</a> | <a href="#">Modifier</a></td>
-                      </tr>
+                    @endforeach
 
                   </tbody>
                 </table>
