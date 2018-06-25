@@ -24,4 +24,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('gestionUtilisateur', 'GestionUtilisateurController');
     Route::resource('categorie', 'CategorieController');
     Route::resource('subcategorie', 'SubCategorieController');
+    Route::resource('message', 'MessageController');
 });
