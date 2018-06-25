@@ -24,4 +24,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('gestionUtilisateur', 'GestionUtilisateurController');
     Route::resource('categorie', 'CategorieController');
     Route::resource('subcategorie', 'SubCategorieController');
+    Route::get('/subcategorie/{id}/create', 'SubCategorieController@customcreate')->name('subcategorie.customcreate');
 });

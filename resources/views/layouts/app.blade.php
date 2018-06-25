@@ -40,14 +40,11 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        <li><a class="nav-link" href="{{ route('articles.index') }}">Tous les articles</a></li>
                         <li><a class="nav-link" href="{{ route('categorie.index') }}">Forum</a></li>
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @else
-                            <li><a class="nav-link" href="{{ route('mesarticles') }}">Mes articles</a></li>
-                            <li><a class="nav-link" href="{{ route('articles.create') }}">Ajouter un article</a></li>
                             @can('isAdmin')
                              <li><a class="nav-link" href="{{ route('gestionUtilisateur.index') }}">Gestion utilisateurs</span></li>
                             @endcan
