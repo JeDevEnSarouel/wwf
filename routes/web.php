@@ -23,4 +23,5 @@ Route::middleware('auth')->group(function () {
     // Route::get('/gestion', 'GestionUtilisateurController@index')->name('gestionutilisateurindex');
     Route::resource('gestionUtilisateur', 'GestionUtilisateurController');
     Route::resource('categorie', 'CategorieController');
+    Route::resource('subcategorie', 'SubCategorieController');
 });
