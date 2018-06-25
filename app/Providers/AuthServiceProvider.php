@@ -30,8 +30,8 @@ class AuthServiceProvider extends ServiceProvider
             return $user->type == 'admin';
         });
 
-        $gate->define('isAuthor', function($user){
-            return $user->type == 'author';
+        $gate->define('isModo', function($user){
+            return $user->type == 'modo';
         });
         $gate->define('isUser', function($user){
             return $user->type == 'user';
