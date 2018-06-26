@@ -18,18 +18,21 @@
         					</thead>
 
                   <tbody>
+                    @foreach($subcategorie->messages as $message)
                       <tr>
-                        <td>futur message</td>
-                      </tr>
-                      <tr>
-                        <td>futur message</td>
-                      </tr>
-                      <tr>
-                        <td>futur message</td>
-                      </tr>
 
-                  </tbody>
-                </table>
+                        <td>{{ $message->text }}</td>
+                        <td><a href="{{route('message.show', $message->id)}}" class="btn btn-success">Accéder</a>
+                            <a href="{{route('message.edit', $message->id)}}" class="btn btn-warning">Modifier</a>
+                            {{ Form::open(array('url' => 'message/' . $message->id, 'class' => 'pull-right')) }}
+                                {{ Form::hidden('_method', 'DELETE') }}
+                                {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}
+                            {{ Form::close() }}
+                        </td>
+                      </tr>
+                    @endforeach
+
+                  </tbod
             </div>
         </div>
     </div>

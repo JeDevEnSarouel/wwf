@@ -11,4 +11,8 @@ class SubCategorie extends Model
   public function categorie(){
     return $this->belongsTo(Categorie::class);
   }
+
+  public function messages(){
+    return $this->hasMany(Message::class);
+  }
 }

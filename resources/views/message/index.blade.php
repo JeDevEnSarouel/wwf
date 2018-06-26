@@ -24,7 +24,7 @@
                       <tr>
                         <td>{{$message->text}}</td>
                         <td>
-                            <span class="glyphicon glyphicon-pencil" ></span>
+                                <span class="glyphicon glyphicon-pencil" ></span>
                             <a href="{{route('message.edit', $message->id)}}" class="btn btn-warning">Modifier</a>
                             {{ Form::open(array('url' => 'message/' . $message->id, 'class' => 'pull-right')) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
