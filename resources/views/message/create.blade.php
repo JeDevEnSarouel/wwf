@@ -17,6 +17,8 @@
               {{ Form::text('text', Input::old('text'), array('class' => 'form-control')) }}
             </div>
 
+            {{ Form::hidden('sub_categorie_id', $id) }}
+
             {{ Form::submit('Créer', array('class' => 'btn btn-primary')) }}
 
           {{ Form::close() }}

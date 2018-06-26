@@ -157,6 +157,12 @@ class CategorieController extends Controller
   {
     // delete
     $categorie = Categorie::find($id);
+    foreach ($categorie->subcategories as $subcategorie) {
+      foreach ($subcategorie->messages as $message) {
+        $message->delete();
+      }
+      $subcategorie->delete();
+    }
     $categorie->delete();
 
     // redirect

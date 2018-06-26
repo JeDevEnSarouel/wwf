@@ -7,6 +7,7 @@
             <div class="card">
                 <div class="card-header">Sous catégorie {{ $subcategorie->titre }}</div>
                 <a href="{{route('categorie.show', $subcategorie->categorie_id)}}">Retour</a>
+                <a href="{{ route('message.customcreate', $subcategorie->id) }}">Créer un message</a>
 
                 <table class="table table-responsive">
         					<thead>
@@ -22,8 +23,7 @@
                       <tr>
 
                         <td>{{ $message->text }}</td>
-                        <td><a href="{{route('message.show', $message->id)}}" class="btn btn-success">Accéder</a>
-                            <a href="{{route('message.edit', $message->id)}}" class="btn btn-warning">Modifier</a>
+                        <td><a href="{{route('message.edit', $message->id)}}" class="btn btn-warning">Modifier</a>
                             {{ Form::open(array('url' => 'message/' . $message->id, 'class' => 'pull-right')) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
                                 {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}

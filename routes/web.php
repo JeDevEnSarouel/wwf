@@ -26,5 +26,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('subcategorie', 'SubCategorieController');
     Route::resource('message', 'MessageController');
     Route::get('/subcategorie/{id}/create', 'SubCategorieController@customcreate')->name('subcategorie.customcreate');
+    Route::get('/message/{id}/create', 'MessageController@customcreate')->name('message.customcreate');
 
 });

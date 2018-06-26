@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\User;
+use \App\SubCategorie;
 use \App\Message;
 use Gate;
 use View;
@@ -26,26 +27,15 @@ class MessageController extends Controller
   }
 
   /**
-   * Display a listing of the resource.
-   *
-   * @return Response
-   */
-  public function index()
-  {
-    $messages = Message::all();
-    // return view('gestionUtilisateurIndex',compact('users'));
-    return View::make('message.index')
-        ->with('messages', $messages);
-  }
-
-  /**
    * Show the form for creating a new resource.
    *
    * @return Response
    */
-  public function create()
+  public function customcreate($id)
   {
-    return View::make('message.create');
+    return View::make('message.create')
+      ->with('id', $id);
+
   }
 
   /**
@@ -59,6 +49,7 @@ class MessageController extends Controller
     // read more on validation at http://laravel.com/docs/validation
     $rules = array(
         'text'       => 'required',
+        'sub_categorie_id' => 'required',
     );
     $validator = Validator::make(Input::all(), $rules);
 
@@ -70,29 +61,18 @@ class MessageController extends Controller
         // store
         $message = new Message;
         $message->text       = Input::get('text');
-        $message->subcategorie_id     =     '1';
+        $message->sub_categorie_id     =     Input::get('sub_categorie_id');
         $message->save();
+
+        $subcategorie = SubCategorie::find($message->sub_categorie_id);
+
 
         // redirect
         Session::flash('message', 'Message créé!');
-        return Redirect::to('message');
+        return View::make('subcategorie.show')
+          ->with('subcategorie', $subcategorie);
+
     }
-  }
-
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return Response
-   */
-  public function show($id)
-  {
-    // get the nerd
-    $message = Message::find($id);
-
-    // show the view and pass the message to it
-    return View::make('message.show')
-        ->with('message', $message);
   }
 
   /**
@@ -156,10 +136,13 @@ class MessageController extends Controller
   {
     // delete
     $message = Message::find($id);
+    $subcategorie = SubCategorie::find($message->sub_categorie_id);
     $message->delete();
 
     // redirect
     Session::flash('message', 'Message supprimée');
-    return Redirect::to('message');
+    return View::make('subcategorie.show')
+      ->with('subcategorie', $subcategorie);
+
   }
 }
