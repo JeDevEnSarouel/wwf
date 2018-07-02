@@ -46,7 +46,7 @@ class CategorieController extends Controller
   public function create()
   {
     if(!Gate::allows('isAdmin')){
-        abort(404,"Sorry, You can do this actions");
+        abort(404,"Sorry, You can't do this actions");
     }
     return View::make('categorie.create');
   }
@@ -58,6 +58,9 @@ class CategorieController extends Controller
    */
   public function store()
   {
+    if(!Gate::allows('isAdmin')){
+        abort(404,"Sorry, You can't do this actions");
+    }
     // validate
     // read more on validation at http://laravel.com/docs/validation
     $rules = array(
@@ -124,6 +127,9 @@ class CategorieController extends Controller
    */
   public function update($id)
   {
+    if(!Gate::allows('isAdmin')){
+        abort(404,"Sorry, You can't do this actions");
+    }
     // validate
     // read more on validation at http://laravel.com/docs/validation
     $rules = array(
@@ -155,6 +161,9 @@ class CategorieController extends Controller
    */
   public function destroy($id)
   {
+    if(!Gate::allows('isAdmin')){
+        abort(404,"Sorry, You can't do this actions");
+    }
     // delete
     $categorie = Categorie::find($id);
     foreach ($categorie->subcategories as $subcategorie) {

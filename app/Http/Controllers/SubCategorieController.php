@@ -97,9 +97,21 @@ class SubCategorieController extends Controller
      // get the nerd
      $subcategorie = SubCategorie::find($id);
 
+
+
+
+
+
+
+
+
+
+
+
      // show the view and pass the categorie to it
      return View::make('subcategorie.show')
-         ->with('subcategorie', $subcategorie);
+       ->with('subcategorie', $subcategorie)
+       ->with('id', $id);
    }
 
    /**

@@ -9,6 +9,7 @@ use \App\Message;
 use Gate;
 use View;
 use Validator;
+use Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Session;
@@ -45,6 +46,7 @@ class MessageController extends Controller
    */
   public function store()
   {
+    $user = Auth::user();
     // validate
     // read more on validation at http://laravel.com/docs/validation
     $rules = array(
@@ -55,13 +57,15 @@ class MessageController extends Controller
 
     // process the login
     if ($validator->fails()) {
-        return Redirect::to('message/create')
+      return View::make('subcategorie.show')
+            ->with('subcategorie', $subcategorie)
             ->withErrors($validator);
     } else {
         // store
         $message = new Message;
         $message->text       = Input::get('text');
         $message->sub_categorie_id     =     Input::get('sub_categorie_id');
+        $message->user_id = $user->id;
         $message->save();
 
         $subcategorie = SubCategorie::find($message->sub_categorie_id);
@@ -70,7 +74,9 @@ class MessageController extends Controller
         // redirect
         Session::flash('message', 'Message créé!');
         return View::make('subcategorie.show')
-          ->with('subcategorie', $subcategorie);
+          ->with('subcategorie', $subcategorie)
+          ->with('id', $message->sub_categorie_id);
+
 
     }
   }
@@ -84,15 +90,23 @@ class MessageController extends Controller
   public function edit($id)
   {
     if(!Gate::allows('isAdmin')  && !Gate::allows('isModo')){
-        abort(404,"Sorry, You can do this actions");
+        abort(404,"Sorry, You can't do this actions");
     }
 
     // get the nerd
     $message = Message::find($id);
 
+    $subcategories = SubCategorie::all();
+    foreach ($subcategories as $subcategorie) {
+        $subcategoriesArray[$subcategorie->id] = $subcategorie->titre;
+    }
+
     // show the edit form and pass the nerd
     return View::make('message.edit')
-        ->with('message', $message);
+      ->with('message', $message)
+      ->with('subcategoriesArray', $subcategoriesArray)
+      ->with('id', $message->sub_categorie_id);
+
   }
 
   /**
@@ -103,6 +117,9 @@ class MessageController extends Controller
    */
   public function update($id)
   {
+    if(!Gate::allows('isAdmin')  && !Gate::allows('isModo')){
+        abort(404,"Sorry, You can't do this actions");
+    }
     // validate
     // read more on validation at http://laravel.com/docs/validation
     $rules = array(
@@ -118,11 +135,16 @@ class MessageController extends Controller
         // store
         $message = Message::find($id);
         $message->text       = Input::get('text');
+        $message->sub_categorie_id       = Input::get('sub_categorie_id');
         $message->save();
 
-        // redirect
-        Session::flash('message', 'Message modifiée!');
-        return Redirect::to('message');
+        $subcategorie = SubCategorie::find($message->sub_categorie_id);
+
+        Session::flash('message', 'Message modifié');
+        return View::make('subcategorie.show')
+          ->with('subcategorie', $subcategorie)
+          ->with('id', $message->sub_categorie_id);
+
     }
   }
 
@@ -134,15 +156,20 @@ class MessageController extends Controller
    */
   public function destroy($id)
   {
+    if(!Gate::allows('isAdmin')  && !Gate::allows('isModo')){
+        abort(404,"Sorry, You can't do this actions");
+    }
     // delete
     $message = Message::find($id);
     $subcategorie = SubCategorie::find($message->sub_categorie_id);
     $message->delete();
 
     // redirect
-    Session::flash('message', 'Message supprimée');
+    Session::flash('message', 'Message supprimé');
     return View::make('subcategorie.show')
-      ->with('subcategorie', $subcategorie);
+      ->with('subcategorie', $subcategorie)
+      ->with('id', $message->sub_categorie_id);
+
 
   }
 }

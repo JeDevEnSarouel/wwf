@@ -27,5 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('message', 'MessageController');
     Route::get('/subcategorie/{id}/create', 'SubCategorieController@customcreate')->name('subcategorie.customcreate');
     Route::get('/message/{id}/create', 'MessageController@customcreate')->name('message.customcreate');
-
+    Route::post('/message/validate', array('as' => 'message.validate',
+        'uses' => 'MessageController@store'));
 });

@@ -16,6 +16,9 @@
               {{ Form::label('text', 'Text') }}
               {{ Form::text('text', null, array('class' => 'form-control')) }}
             </div>
+            <div class="form-group">
+              {{ Form::select('sub_categorie_id', $subcategoriesArray, null, ['class' => 'select2']) }}
+            </div>
             {{ Form::submit('Modifier', array('class' => 'btn btn-primary')) }}
 
           {{ Form::close() }}
