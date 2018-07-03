@@ -5,21 +5,19 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-          <h1>Créer un message</h1>
+          <h1>Modifier la réponse {{ $reponse->texte }}</h1>
 
           <!-- if there are creation errors, they will show here -->
           {{ HTML::ul($errors->all()) }}
 
-            {{ Form::open(array('url' => 'message')) }}
+          {{ Form::model($reponse, array('route' => array('reponse.update', $reponse->id), 'method' => 'PUT')) }}
 
             <div class="form-group">
-              {{ Form::label('text', 'Message') }}
-              {{ Form::text('text', Input::old('text'), array('class' => 'form-control')) }}
+              {{ Form::label('text', 'Text') }}
+              {{ Form::text('text', null, array('class' => 'form-control')) }}
             </div>
 
-            {{ Form::hidden('sub_categorie_id', $id) }}
-
-            {{ Form::submit('Créer', array('class' => 'btn btn-primary')) }}
+            {{ Form::submit('Modifier', array('class' => 'btn btn-primary')) }}
 
           {{ Form::close() }}
 

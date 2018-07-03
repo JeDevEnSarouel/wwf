@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use \App\User;
 use \App\SubCategorie;
 use \App\Message;
+use \App\Reponse;
 use Gate;
 use View;
 use Validator;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Session;
 
-class MessageController extends Controller
+class ReponseController extends Controller
 {
 
   /**
@@ -27,17 +28,7 @@ class MessageController extends Controller
       $this->middleware('auth');
   }
 
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return Response
-   */
-  public function customcreate($id)
-  {
-    return View::make('message.create')
-      ->with('id', $id);
 
-  }
 
   /**
    * Store a newly created resource in storage.
@@ -52,6 +43,7 @@ class MessageController extends Controller
     $rules = array(
         'text'       => 'required',
         'sub_categorie_id' => 'required',
+        'message_id' => 'required',
     );
     $validator = Validator::make(Input::all(), $rules);
 
@@ -62,20 +54,20 @@ class MessageController extends Controller
             ->withErrors($validator);
     } else {
         // store
-        $message = new Message;
-        $message->text       = Input::get('text');
-        $message->sub_categorie_id     =     Input::get('sub_categorie_id');
-        $message->user_id = $user->id;
-        $message->save();
+        $reponse = new Reponse;
+        $reponse->text       = Input::get('text');
+        $reponse->message_id     =     Input::get('message_id');
+        $reponse->user_id = $user->id;
+        $reponse->save();
 
-        $subcategorie = SubCategorie::find($message->sub_categorie_id);
+        $subcategorie = SubCategorie::find($reponse->message->sub_categorie_id);
 
 
         // redirect
-        Session::flash('message', 'Message créé!');
+        Session::flash('message', 'Réponse créé!');
         return View::make('subcategorie.show')
           ->with('subcategorie', $subcategorie)
-          ->with('id', $message->sub_categorie_id);
+          ->with('id', $reponse->message->sub_categorie_id);
 
 
     }
@@ -94,18 +86,12 @@ class MessageController extends Controller
     }
 
     // get the nerd
-    $message = Message::find($id);
-
-    $subcategories = SubCategorie::all();
-    foreach ($subcategories as $subcategorie) {
-        $subcategoriesArray[$subcategorie->id] = $subcategorie->titre;
-    }
+    $reponse = Reponse::find($id);
 
     // show the edit form and pass the nerd
-    return View::make('message.edit')
-      ->with('message', $message)
-      ->with('subcategoriesArray', $subcategoriesArray)
-      ->with('id', $message->sub_categorie_id);
+    return View::make('reponse.edit')
+      ->with('reponse', $reponse)
+      ->with('id', $reponse->message->sub_categorie_id);
 
   }
 
@@ -129,21 +115,20 @@ class MessageController extends Controller
 
     // process the login
     if ($validator->fails()) {
-        return Redirect::to('message/' . $id . '/edit')
+        return Redirect::to('reponse/' . $id . '/edit')
             ->withErrors($validator);
     } else {
         // store
-        $message = Message::find($id);
-        $message->text       = Input::get('text');
-        $message->sub_categorie_id       = Input::get('sub_categorie_id');
-        $message->save();
+        $reponse = Reponse::find($id);
+        $reponse->text       = Input::get('text');
+        $reponse->save();
 
-        $subcategorie = SubCategorie::find($message->sub_categorie_id);
+        $subcategorie = SubCategorie::find($reponse->message->sub_categorie_id);
 
-        Session::flash('message', 'Message modifié');
+        Session::flash('message', 'Réponse modifié');
         return View::make('subcategorie.show')
           ->with('subcategorie', $subcategorie)
-          ->with('id', $message->sub_categorie_id);
+          ->with('id', $reponse->message->sub_categorie_id);
 
     }
   }
@@ -160,18 +145,15 @@ class MessageController extends Controller
         abort(404,"Sorry, You can't do this actions");
     }
     // delete
-    $message = Message::find($id);
-    $subcategorie = SubCategorie::find($message->sub_categorie_id);
-    foreach ($message->reponses as $reponse) {
-      $reponse->delete();
-    }
-    $message->delete();
+    $reponse = Reponse::find($id);
+    $subcategorie = SubCategorie::find($reponse->message->sub_categorie_id);
+    $reponse->delete();
 
     // redirect
-    Session::flash('message', 'Message supprimé');
+    Session::flash('message', 'Réponse supprimé');
     return View::make('subcategorie.show')
       ->with('subcategorie', $subcategorie)
-      ->with('id', $message->sub_categorie_id);
+      ->with('id', $subcategorie->id);
 
 
   }

@@ -180,6 +180,9 @@ class SubCategorieController extends Controller
      $subcategorie = SubCategorie::find($id);
      $categorie = Categorie::find($subcategorie->categorie_id);
      foreach ($subcategorie->messages as $message) {
+       foreach ($message->reponses as $reponse) {
+         $reponse->delete();
+       }
        $message->delete();
      }
      $subcategorie->delete();

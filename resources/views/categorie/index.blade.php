@@ -2,14 +2,17 @@
 
 @section('content')
 <div class="container">
-    @if (Session::has('message'))
+  @if (Session::has('message'))
       <div class="alert alert-info">{{ Session::get('message') }}</div>
     @endif
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Catégories</div>
+                @if (Auth::user()->type == 'admin')
                 <a href="{{ route('categorie.create') }}">Créer une nouvelle catégorie</a>
+                @endif
+
                 <table class="table" style="width:100%">
         					<thead>
         						<tr>
@@ -24,11 +27,14 @@
                       <tr>
                         <td>{{$categorie->titre}}</td>
                         <td><a href="{{route('categorie.show', $categorie->id)}}" class="btn btn-success">Accéder</a>
+                          @if (Auth::user()->type == 'admin')
+
                             <a href="{{route('categorie.edit', $categorie->id)}}" class="btn btn-warning">Modifier</a>
                             {{ Form::open(array('url' => 'categorie/' . $categorie->id, 'class' => 'pull-right')) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
                                 {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}
                             {{ Form::close() }}
+                          @endif
                         </td>
                       </tr>
 

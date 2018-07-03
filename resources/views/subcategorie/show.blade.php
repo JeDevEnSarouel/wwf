@@ -2,6 +2,9 @@
 
 @section('content')
 <div class="container">
+  @if (Session::has('message'))
+    <div class="alert alert-info">{{ Session::get('message') }}</div>
+  @endif
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -12,8 +15,10 @@
         					<thead>
         						<tr>
                       <th>User</th>
-                      <th>Nom</th>
+                      <th colspan="2">Message</th>
+                      @if (Auth::user()->type == 'admin' || Auth::user()->type == 'modo' )
                       <th>Action</th>
+                      @endif
         						</tr>
 
         					</thead>
@@ -23,13 +28,50 @@
                       <tr>
 
                         <td>{{ $message->user->name }}</td>
-                        <td>{{ $message->text }}</td>
-                        <td><a href="{{route('message.edit', $message->id)}}" class="btn btn-warning">Modifier</a>
+                        <td colspan="2">{{ $message->text }}</td>
+                        @if (Auth::user()->type == 'admin' || Auth::user()->type == 'modo' )
+                            <td><a href="{{route('message.edit', $message->id)}}" class="btn btn-warning">Modifier</a>
                             {{ Form::open(array('url' => 'message/' . $message->id, 'class' => 'pull-right')) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
                                 {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}
                             {{ Form::close() }}
-                            <a href="" class="btn btn-success">Répondre</a>
+                        </td>
+                        @endif
+
+                      </tr>
+                        @foreach($message->reponses as $reponse)
+                        <tr>
+                          <td></td>
+                          <td>{{ $reponse->user->name }}</td>
+                          <td>{{ $reponse->text }}</td>
+                          @if (Auth::user()->type == 'admin' || Auth::user()->type == 'modo' )
+                          <td><a href="{{route('reponse.edit', $reponse->id)}}" class="btn btn-warning">Modifier</a>
+                              {{ Form::open(array('url' => 'reponse/' . $reponse->id, 'class' => 'pull-right')) }}
+                                  {{ Form::hidden('_method', 'DELETE') }}
+                                  {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}
+                              {{ Form::close() }}
+                          </td>
+                          @endif
+                        </tr>
+                        @endforeach
+                      <tr>
+                        <td colspan="4">
+                          {{ HTML::ul($errors->all()) }}
+
+                            {{ Form::open(array('url' => '/reponse/validate')) }}
+
+                            <div class="form-group">
+                              {{ Form::label('text', 'Envoyer une réponse') }}
+                              {{ Form::text('text', Input::old('text'), array('class' => 'form-control')) }}
+                            </div>
+
+                            {{ Form::hidden('sub_categorie_id', $id) }}
+                            {{ Form::hidden('message_id', $message->id) }}
+
+
+                            {{ Form::submit('Envoyer', array('class' => 'btn btn-primary')) }}
+
+                          {{ Form::close() }}
                         </td>
                       </tr>
                     @endforeach

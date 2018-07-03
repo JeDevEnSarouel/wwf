@@ -168,6 +168,9 @@ class CategorieController extends Controller
     $categorie = Categorie::find($id);
     foreach ($categorie->subcategories as $subcategorie) {
       foreach ($subcategorie->messages as $message) {
+        foreach ($message->reponses as $reponse) {
+          $reponse->delete();
+        }
         $message->delete();
       }
       $subcategorie->delete();

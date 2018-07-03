@@ -25,8 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('categorie', 'CategorieController');
     Route::resource('subcategorie', 'SubCategorieController');
     Route::resource('message', 'MessageController');
+    Route::resource('reponse', 'ReponseController');
     Route::get('/subcategorie/{id}/create', 'SubCategorieController@customcreate')->name('subcategorie.customcreate');
     Route::get('/message/{id}/create', 'MessageController@customcreate')->name('message.customcreate');
     Route::post('/message/validate', array('as' => 'message.validate',
         'uses' => 'MessageController@store'));
+    Route::post('/reponse/validate', array('as' => 'reponse.validate',
+        'uses' => 'ReponseController@store'));
 });
